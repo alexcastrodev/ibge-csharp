@@ -50,3 +50,10 @@ https://localhost:7186/swagger/index.html
 
 This following links are the references i read for build this project:
 
+https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-mstest
+
+https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices
+
+https://stackoverflow.com/questions/51489111/how-to-unit-test-with-actionresultt
+
+https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-7.0&viewFallbackFrom=aspnetcore-2.2#actionresultt-type
