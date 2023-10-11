@@ -18,8 +18,8 @@ public class LocationsController : ControllerBase
 	[HttpGet(Name = "GetListOfIbge")]
 	public async Task<ActionResult<List<Location>>> Get()
 	{
-		var locations = await _context.Locations.ToListAsync();
+		List<Location> locations = await _context.Locations.ToListAsync();
 
-		return Ok(locations);
+		return locations;
 	}
 }
