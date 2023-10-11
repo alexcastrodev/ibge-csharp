@@ -10,17 +10,17 @@ public class LocationTest
 	[TestMethod]
 	public async Task Get_Locations_ReturnsEmpty()
 	{
-        // Arrange
-        DbContextOptions<LocationContext> options = new DbContextOptionsBuilder<LocationContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-        LocationContext context = new(options);
-        LocationsController controller = new(context);
+		// Arrange
+		DbContextOptions<LocationContext> options = new DbContextOptionsBuilder<LocationContext>()
+				.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+				.Options;
+		LocationContext context = new(options);
+		LocationsController controller = new(context);
 
-        // Act
-        ActionResult<List<Location>> result = await controller.Get();
+		// Act
+		ActionResult<List<Location>> result = await controller.Get();
 
-        // Assert
-        Assert.AreEqual(0, result.Value?.Count);
-    }
+		// Assert
+		Assert.AreEqual(0, result.Value?.Count);
+	}
 }
