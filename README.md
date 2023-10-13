@@ -57,3 +57,11 @@ https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practice
 https://stackoverflow.com/questions/51489111/how-to-unit-test-with-actionresultt
 
 https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-7.0&viewFallbackFrom=aspnetcore-2.2#actionresultt-type
+
+https://learn.microsoft.com/en-us/previous-versions/aspnet/cc668224(v=vs.100)
+
+https://www.youtube.com/watch?v=kgzc_gw2pi8
+
+https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/ignore-properties?pivots=dotnet-7-0
+
+https://www.infoworld.com/article/3669188/how-to-implement-jwt-authentication-in-aspnet-core-6.html

@@ -1,5 +1,5 @@
 ﻿using ibge.Controllers;
-using ibge.Entities;
+using ibge.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +11,10 @@ public class LocationTest
 	public async Task Get_Locations_ReturnsEmpty()
 	{
         // Arrange
-        DbContextOptions<LocationContext> options = new DbContextOptionsBuilder<LocationContext>()
+        DbContextOptions<AppDbContext> options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-        LocationContext context = new(options);
+        AppDbContext context = new(options);
         LocationsController controller = new(context);
 
         // Act

@@ -1,4 +1,5 @@
-﻿using ibge.Entities;
+﻿using ibge.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,14 +9,15 @@ namespace ibge.Controllers;
 [Route("v1/[controller]")]
 public class LocationsController : ControllerBase
 {
-	private readonly LocationContext _context;
+	private readonly AppDbContext _context;
 
-	public LocationsController(LocationContext context)
+	public LocationsController(AppDbContext context)
 	{
 		_context = context;
 	}
 
-	[HttpGet(Name = "GetListOfIbge")]
+    [Authorize]
+    [HttpGet(Name = "GetListOfIbge")]
 	public async Task<ActionResult<List<Location>>> Get()
 	{
 		List<Location> locations = await _context.Locations.ToListAsync();
