@@ -63,3 +63,5 @@ https://learn.microsoft.com/en-us/previous-versions/aspnet/cc668224(v=vs.100)
 https://www.youtube.com/watch?v=kgzc_gw2pi8
 
 https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/ignore-properties?pivots=dotnet-7-0
+
+https://www.infoworld.com/article/3669188/how-to-implement-jwt-authentication-in-aspnet-core-6.html
