@@ -1,0 +1,13 @@
+version: "3"
+
+networks:
+  default:
+    name: ibge_net
+
+services:
+  app:
+    build:
+      context: .
+      target: final
+    ports:
+      - 7186:80

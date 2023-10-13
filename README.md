@@ -9,7 +9,7 @@
 
 # How to use
 
-## Using without Docker
+## Running without Docker
 
 ### restore
 
@@ -27,6 +27,18 @@ dotnet run build
 
 ```bash
 dotnet run --project Ibge
+```
+
+## Running with Docker
+
+### build container
+```
+docker compose build
+```
+
+### run container
+```
+docker compose up
 ```
 
 ### Requests
