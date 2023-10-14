@@ -25,11 +25,9 @@
   <ItemGroup>
     <None Remove="Contexts\" />
     <None Remove="Models\" />
-    <None Remove="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contexts\" />
     <Folder Include="Models\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 </Project>
