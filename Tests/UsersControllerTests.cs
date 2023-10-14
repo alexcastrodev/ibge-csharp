@@ -1,5 +1,5 @@
 ﻿using ibge.Controllers;
-using ibge.Dto;
+using ibge.Dtos;
 using ibge.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

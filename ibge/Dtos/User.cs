@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ibge.Dto;
+namespace ibge.Dtos;
 
 public class LoggedUser
 {

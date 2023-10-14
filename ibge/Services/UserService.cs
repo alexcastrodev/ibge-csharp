@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ibge.Dto;
+using ibge.Dtos;
 using ibge.Models;
 using ibge.Repository;
 using Microsoft.AspNetCore.Mvc;

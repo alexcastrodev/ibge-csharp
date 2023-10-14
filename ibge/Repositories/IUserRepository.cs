@@ -1,4 +1,4 @@
-﻿using ibge.Dto;
+﻿using ibge.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ibge.Repository;

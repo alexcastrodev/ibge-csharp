@@ -1,4 +1,4 @@
-﻿using ibge.Dto;
+﻿using ibge.Dtos;
 using ibge.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
