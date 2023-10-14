@@ -16,11 +16,11 @@ public class LocationsController : ControllerBase
 		_context = context;
 	}
 
-    [Authorize]
-    [HttpGet(Name = "GetListOfIbge")]
+	[Authorize]
+	[HttpGet(Name = "GetListOfIbge")]
 	public async Task<ActionResult<List<Location>>> Get()
 	{
-		List<Location> locations = await _context.Locations.ToListAsync();
+		var locations = await _context.Locations.ToListAsync();
 
 		return locations;
 	}

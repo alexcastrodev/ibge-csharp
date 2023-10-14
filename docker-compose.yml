@@ -1,0 +1,10 @@
+﻿version: '3.8'
+services:
+  mssql:
+    container_name: ibge-db
+    image: mcr.microsoft.com/azure-sql-edge
+    env_file: .env
+    ports:
+      - 1433:1433
+    volumes:
+      - ./data:/var/opt/mssql

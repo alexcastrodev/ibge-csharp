@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ibge.Models
+namespace ibge.Models;
+
+public class Location
 {
-	public class Location
-	{
-		[Key]
-		public required string Id { get; set; }
+	[Key] public required string Id { get; set; }
 
-		[Required(ErrorMessage = "State is required")]
-		public required string State { get; set; }
+	[MaxLength(100)]
+	[Required(ErrorMessage = "State is required")]
+	public required string State { get; set; }
 
-		[Required(ErrorMessage = "City is required")]
-		public required string City { get; set; }
-	}
+	[MaxLength(100)]
+	[Required(ErrorMessage = "City is required")]
+	public required string City { get; set; }
 }
-
