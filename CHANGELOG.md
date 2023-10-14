@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-10-14
+
+### Added
+
+- Add SQL Server for data persistence
+- Add docker-compose to run SQL Server
+- Add Repository Pattern
+- Add DTOs
+- Add Dependency Injection of UserService
+
+### Changes
+
+- Improvements on Tests
+
 ## [0.1.0] - 2023-10-11
 
 ### Added
