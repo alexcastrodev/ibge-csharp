@@ -36,4 +36,11 @@ public class LocationTest
         // Assert
         Assert.AreEqual(0, result.Value?.Count);
     }
+	
+	
+	[TestCleanup]
+	public void Cleanup()
+	{
+		_context.Dispose();
+	}
 }
