@@ -1,7 +1,8 @@
-﻿using ibge.Models;
+﻿using ibge.Exceptions;
+using ibge.Models;
+using ibge.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ibge.Controllers;
 
@@ -10,18 +11,37 @@ namespace ibge.Controllers;
 public class LocationsController : ControllerBase
 {
 	private readonly AppDbContext _context;
+	private readonly ILocationRepository _locationService;
 
-	public LocationsController(AppDbContext context)
+	public LocationsController(AppDbContext context, ILocationRepository locationService)
 	{
 		_context = context;
+		_locationService = locationService;
 	}
 
 	[Authorize]
 	[HttpGet(Name = "GetListOfIbge")]
 	public async Task<ActionResult<List<Location>>> Get()
 	{
-		var locations = await _context.Locations.ToListAsync();
+		return await _locationService.Get();
+		;
+	}
 
-		return locations;
+	[Authorize]
+	[HttpPost(Name = "Create a location")]
+	public async Task<ActionResult<bool>> Create(
+		[FromBody] Location model
+	)
+	{
+		try
+		{
+			var createLocation = await _locationService.Create(model);
+			return createLocation.Value;
+		}
+		catch (Exception ex)
+		{
+			if (ex is ConflictException) return Conflict(ex.Message);
+			throw new Exception(ex.Message);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using ibge.Dtos;
+using ibge.Exceptions;
 using ibge.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 
 namespace ibge.Controllers;
 
@@ -30,9 +30,7 @@ public class UsersController : ControllerBase
 		}
 		catch (Exception ex)
 		{
-			if (ex.InnerException is SqlException sqlEx && sqlEx.Number == 2601)
-				return Conflict("Email already exists");
-
+			if (ex is ConflictException) return Conflict(ex.Message);
 			throw new Exception(ex.Message);
 		}
 	}
@@ -42,9 +40,18 @@ public class UsersController : ControllerBase
 		[FromBody] UserParams model
 	)
 	{
-		var jwtKey = _configuration["JwtSettings:Key"] ?? "";
-		var user = await _userService.Login(model, jwtKey);
+		try
+		{
+			var jwtKey = _configuration["JwtSettings:Key"] ?? "";
+			var user = await _userService.Login(model, jwtKey);
 
-		return Ok(user.Value);
+			return Ok(user.Value);
+		}
+		catch (Exception ex)
+		{
+			if (ex is NotFoundException) return NotFound(ex.Message);
+
+			throw new Exception(ex.Message);
+		}
 	}
 }

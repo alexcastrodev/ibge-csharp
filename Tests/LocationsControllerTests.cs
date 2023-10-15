@@ -1,26 +1,44 @@
 ﻿using ibge.Controllers;
-using ibge.Models;
-using Microsoft.AspNetCore.Mvc;
+using ibge.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests;
+
 [TestClass]
 public class LocationTest
 {
+	private DbContextOptions<AppDbContext> _options;
+	private AppDbContext _context;
+	private LocationService _service;
+	private LocationsController _controller;
+
+	[TestInitialize]
+	public void Initialize()
+	{
+		_options = new DbContextOptionsBuilder<AppDbContext>()
+			.UseInMemoryDatabase(Guid.NewGuid().ToString())
+			.Options;
+
+		_context = new AppDbContext(_options);
+		_service = new LocationService(_context);
+
+		_controller = new LocationsController(_context, _service);
+	}
+
 	[TestMethod]
 	public async Task Get_Locations_ReturnsEmpty()
 	{
-        // Arrange
-        DbContextOptions<AppDbContext> options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-        AppDbContext context = new(options);
-        LocationsController controller = new(context);
+		// Act
+		var result = await _controller.Get();
 
-        // Act
-        ActionResult<List<Location>> result = await controller.Get();
+		// Assert
+		Assert.AreEqual(0, result.Value?.Count);
+	}
 
-        // Assert
-        Assert.AreEqual(0, result.Value?.Count);
-    }
+
+	[TestCleanup]
+	public void Cleanup()
+	{
+		_context.Dispose();
+	}
 }

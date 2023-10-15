@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ibge.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231014125028_InitialStructure")]
-    partial class InitialStructure
+    [Migration("20231015202103_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,8 +25,8 @@ namespace ibge.Migrations
 
             modelBuilder.Entity("ibge.Models.Location", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -35,10 +35,12 @@ namespace ibge.Migrations
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id", "State", "City");
 
                     b.ToTable("Locations");
                 });
