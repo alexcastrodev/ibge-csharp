@@ -1,11 +1,9 @@
 ﻿using ibge.Controllers;
-using ibge.Models;
 using ibge.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Tests;
+
 [TestClass]
 public class LocationTest
 {
@@ -26,18 +24,18 @@ public class LocationTest
 
 		_controller = new LocationsController(_context, _service);
 	}
-	
+
 	[TestMethod]
 	public async Task Get_Locations_ReturnsEmpty()
 	{
-        // Act
-        ActionResult<List<Location>> result = await _controller.Get();
+		// Act
+		var result = await _controller.Get();
 
-        // Assert
-        Assert.AreEqual(0, result.Value?.Count);
-    }
-	
-	
+		// Assert
+		Assert.AreEqual(0, result.Value?.Count);
+	}
+
+
 	[TestCleanup]
 	public void Cleanup()
 	{

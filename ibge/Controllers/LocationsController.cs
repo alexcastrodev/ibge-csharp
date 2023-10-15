@@ -23,9 +23,10 @@ public class LocationsController : ControllerBase
 	[HttpGet(Name = "GetListOfIbge")]
 	public async Task<ActionResult<List<Location>>> Get()
 	{
-		return await _locationService.Get();;
+		return await _locationService.Get();
+		;
 	}
-	
+
 	[Authorize]
 	[HttpPost(Name = "Create a location")]
 	public async Task<ActionResult<bool>> Create(
@@ -39,10 +40,7 @@ public class LocationsController : ControllerBase
 		}
 		catch (Exception ex)
 		{
-			if (ex is ConflictException)
-			{
-				return Conflict(ex.Message);
-			}
+			if (ex is ConflictException) return Conflict(ex.Message);
 			throw new Exception(ex.Message);
 		}
 	}

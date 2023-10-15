@@ -30,10 +30,7 @@ public class UsersController : ControllerBase
 		}
 		catch (Exception ex)
 		{
-			if (ex is ConflictException)
-			{
-				return Conflict(ex.Message);
-			}
+			if (ex is ConflictException) return Conflict(ex.Message);
 			throw new Exception(ex.Message);
 		}
 	}
@@ -52,13 +49,9 @@ public class UsersController : ControllerBase
 		}
 		catch (Exception ex)
 		{
-			if (ex is NotFoundException)
-			{
-				return NotFound(ex.Message);
-			}
-			
+			if (ex is NotFoundException) return NotFound(ex.Message);
+
 			throw new Exception(ex.Message);
 		}
-		
 	}
 }
