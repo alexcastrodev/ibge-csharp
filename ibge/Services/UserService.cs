@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ibge.Dtos;
+using ibge.Exceptions;
 using ibge.Models;
 using ibge.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ public class UserService : IUserRepository
 	{
 		var user = await _context.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
 
-		if (user != null) throw new Exception("Email already exists");
+		if (user != null) throw ConflictException.Create("Email already exists");
 
 		user = new User
 		{
@@ -41,7 +42,7 @@ public class UserService : IUserRepository
 	{
 		var user = await _context.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
 
-		if (user == null) throw new Exception("User not found");
+		if (user == null) throw NotFoundException.Create("User not found");
 
 		if (user.Password != HashPassword(model.Password)) throw new Exception("Invalid password");
 

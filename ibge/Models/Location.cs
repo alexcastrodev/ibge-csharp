@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace ibge.Models;
 
+[Index(nameof(Id),nameof(State), nameof(City))]
 public class Location
 {
-	[Key] public required string Id { get; set; }
+	[Required(ErrorMessage = "Id is required")]
+	public required int Id { get; set; }
 
-	[MaxLength(100)]
+	[MaxLength(2)]
 	[Required(ErrorMessage = "State is required")]
 	public required string State { get; set; }
 

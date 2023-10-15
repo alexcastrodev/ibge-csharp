@@ -23,6 +23,13 @@ dotnet run restore
 dotnet run build
 ```
 
+
+## Create a database
+
+```sql
+CREATE DATABASE ibge;
+```
+
 # run
 
 ```bash

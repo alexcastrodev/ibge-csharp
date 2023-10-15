@@ -35,6 +35,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddSingleton<IConfiguration>(configuration);
 
 builder.Services.AddScoped<IUserRepository, UserService>();
+builder.Services.AddScoped<ILocationRepository, LocationService>();
 
 var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"] ?? "");
 
