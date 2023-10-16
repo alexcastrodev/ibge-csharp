@@ -1,3 +1,4 @@
+using ibge.Dtos;
 using ibge.Exceptions;
 using ibge.Models;
 using ibge.Repositories;
@@ -15,9 +16,25 @@ public class LocationService : ILocationRepository
 		_context = context;
 	}
 
-	public async Task<ActionResult<List<Location>>> Get()
+	public async Task<ActionResult<List<Location>>> Get(LocationSearchCriteria searchCriteria)
 	{
-		var locations = await _context.Locations.ToListAsync();
+		var query = _context.Locations.AsQueryable();
+
+		if (searchCriteria.Id.HasValue)
+		{
+			query = query.Where(loc => loc.Id == searchCriteria.Id);
+		}
+		if (!string.IsNullOrEmpty(searchCriteria.City))
+		{
+			query = query.Where(loc => loc.City.Contains(searchCriteria.City));
+		}
+
+		if (!string.IsNullOrEmpty(searchCriteria.State))
+		{
+			query = query.Where(loc => loc.State.Contains(searchCriteria.State));
+		}
+
+		var locations = await query.ToListAsync();
 		return locations;
 	}
 
