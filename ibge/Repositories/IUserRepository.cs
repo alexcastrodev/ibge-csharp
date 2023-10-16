@@ -1,7 +1,7 @@
 ﻿using ibge.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ibge.Repository;
+namespace ibge.Repositories;
 
 public interface IUserRepository
 {

@@ -4,7 +4,7 @@ using System.Text;
 using ibge.Dtos;
 using ibge.Exceptions;
 using ibge.Models;
-using ibge.Repository;
+using ibge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

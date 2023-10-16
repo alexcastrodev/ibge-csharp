@@ -1,6 +1,6 @@
 using ibge.Exceptions;
 using ibge.Models;
-using ibge.Repository;
+using ibge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ public class LocationService : ILocationRepository
 		var locations = await _context.Locations.ToListAsync();
 		return locations;
 	}
-	
+
 	public async Task<ActionResult<bool>> Create(Location model)
 	{
 		var location = _context.Locations.Count(location => location.Id == model.Id);
@@ -29,7 +29,7 @@ public class LocationService : ILocationRepository
 		{
 			throw ConflictException.Create("Location already exists");
 		}
-		
+
 		_context.Locations.Add(model);
 		await _context.SaveChangesAsync();
 		return true;

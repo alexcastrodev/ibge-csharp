@@ -1,7 +1,7 @@
 using ibge.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ibge.Repository;
+namespace ibge.Repositories;
 
 public interface ILocationRepository
 {
