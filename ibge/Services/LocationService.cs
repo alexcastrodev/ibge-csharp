@@ -41,7 +41,6 @@ public class LocationService : ILocationRepository
 	public async Task<ActionResult<bool>> Create(Location model)
 	{
 		var location = _context.Locations.Count(location => location.Id == model.Id);
-
 		if (location > 0)
 		{
 			throw ConflictException.Create("Location already exists");
