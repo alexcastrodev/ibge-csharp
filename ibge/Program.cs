@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using ibge.Repository;
+using ibge.Repositories;
 using ibge.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

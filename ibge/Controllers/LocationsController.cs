@@ -1,6 +1,6 @@
 ﻿using ibge.Exceptions;
 using ibge.Models;
-using ibge.Repository;
+using ibge.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

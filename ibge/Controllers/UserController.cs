@@ -1,6 +1,6 @@
 ﻿using ibge.Dtos;
 using ibge.Exceptions;
-using ibge.Repository;
+using ibge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ibge.Controllers;
