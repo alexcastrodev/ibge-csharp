@@ -11,12 +11,10 @@ namespace ibge.Controllers;
 [Route("v1/[controller]")]
 public class LocationsController : ControllerBase
 {
-	private readonly AppDbContext _context;
 	private readonly ILocationRepository _locationService;
 
-	public LocationsController(AppDbContext context, ILocationRepository locationService)
+	public LocationsController(ILocationRepository locationService)
 	{
-		_context = context;
 		_locationService = locationService;
 	}
 

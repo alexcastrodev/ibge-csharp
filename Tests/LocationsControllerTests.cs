@@ -24,7 +24,7 @@ public class LocationTest
 		_context = new AppDbContext(_options);
 		_service = new LocationService(_context);
 
-		_controller = new LocationsController(_context, _service);
+		_controller = new LocationsController(_service);
 	}
 
 	[TestMethod]
