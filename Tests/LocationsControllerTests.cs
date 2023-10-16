@@ -1,4 +1,5 @@
 ﻿using ibge.Controllers;
+using ibge.Dtos;
 using ibge.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,8 +29,11 @@ public class LocationTest
 	[TestMethod]
 	public async Task Get_Locations_ReturnsEmpty()
 	{
+		// arrange
+		LocationSearchCriteria searchCriteria = new();
+		
 		// Act
-		var result = await _controller.Get();
+		var result = await _controller.Get(searchCriteria);
 
 		// Assert
 		Assert.AreEqual(0, result.Value?.Count);

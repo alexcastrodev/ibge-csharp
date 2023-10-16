@@ -1,4 +1,5 @@
-﻿using ibge.Exceptions;
+﻿using ibge.Dtos;
+using ibge.Exceptions;
 using ibge.Models;
 using ibge.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +22,9 @@ public class LocationsController : ControllerBase
 
 	[Authorize]
 	[HttpGet(Name = "GetListOfIbge")]
-	public async Task<ActionResult<List<Location>>> Get()
+	public async Task<ActionResult<List<Location>>> Get([FromQuery] LocationSearchCriteria searchCriteria)
 	{
-		return await _locationService.Get();
-		;
+		return await _locationService.Get(searchCriteria);
 	}
 
 	[Authorize]
