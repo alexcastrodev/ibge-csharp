@@ -4,6 +4,7 @@ The challenge will be based on the [repository](https://github.com/andrebaltieri
 
 The instructions for the challenge can be found [at this link](https://baltaio.blob.core.windows.net/temp/desafio-dotnet/01-sobre.pdf).
 
+PS: The resource will be active until end of October 2023.
 
 # Resources
 
