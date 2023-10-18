@@ -38,7 +38,7 @@ public class BulkController : ControllerBase
 
         var stream = file.OpenReadStream();
         var path = Path.GetTempFileName();
-        BulkProcessResults results = new();
+        BulkProcessResults results;
         
         await using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
         {
