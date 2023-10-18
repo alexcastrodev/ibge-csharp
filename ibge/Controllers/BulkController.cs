@@ -36,51 +36,26 @@ public class BulkController : ControllerBase
             return BadRequest("The uploaded file is not in XLSX format.");
         }
 
-        var values = new List<Dictionary<string, object>>();
         var stream = file.OpenReadStream();
         var path = Path.GetTempFileName();
-        var i = 0;
-
+        BulkProcessResults results = new();
+        
         await using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
         {
             await stream.CopyToAsync(fileStream);
+            
             var states = ReadStates(stream);
-
-            foreach (CityRow row in stream.Query<CityRow>(sheetName: "MUNICIPIOS"))
-            {
-                i++;
-                StatesRow? state = states.Find(s => s.Code == (int)row.Codigo_UF);
-                if (state == null) continue;
-
-                try
-                {
-                    var abbreviation = state.Abbreviation.ToUpper() ?? "";
-                    await ProcessExcelRow(row.Codigo_Municipio, abbreviation, row.Nome_Municipio);
-                }
-                catch (Exception ex)
-                {
-                    if (ex is ConflictException)
-                    {
-                        values.Add(
-                            new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Localização já existe" } }
-                        );
-                        continue;
-                    }
-                    values.Add(
-                     new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Linha inválida" } }
-                    );
-                }
-            }
+            results = await ProcessExcel(stream, states);
         }
 
 
         string errorFile = null!;
 
-        if (values.Count > 0)
+        if (results.errors > 0)
         {
             var filename = $"{Guid.NewGuid()}.xlsx".ToLower();
             var tempPath = Path.GetTempPath() + filename;
-            await MiniExcel.SaveAsAsync(tempPath, values);
+            await MiniExcel.SaveAsAsync(tempPath, results.errorsResult);
             await using (var tempStream = new FileStream(tempPath, FileMode.Open))
             {
                 await _blobProvider.UploadFile(filename, tempStream);
@@ -89,8 +64,7 @@ public class BulkController : ControllerBase
             errorFile = _blobProvider.GetDownloadUrl(filename);
         }
 
-        var successed = i - values.Count;
-        var processedLabel = $"{successed} processed, {values.Count} errors";
+        var processedLabel = $"{results.processed} processed, {results.errors} errors";
 
         return Ok(
             new BulkResponse()
@@ -100,6 +74,46 @@ public class BulkController : ControllerBase
             });
     }
 
+    private async Task<BulkProcessResults> ProcessExcel(Stream stream, List<StatesRow> states)
+    {
+        var i = 0;
+        var values = new List<Dictionary<string, object>>();
+
+        foreach (CityRow row in stream.Query<CityRow>(sheetName: "MUNICIPIOS"))
+        {
+            i++;
+            StatesRow? state = states.Find(s => s.Code == row.Codigo_UF);
+            if (state == null) continue;
+
+            try
+            {
+                var abbreviation = state.Abbreviation.ToUpper() ?? "";
+                await ProcessExcelRow(row.Codigo_Municipio, abbreviation, row.Nome_Municipio);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ConflictException)
+                {
+                    values.Add(
+                        new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Localização já existe" } }
+                    );
+                    continue;
+                }
+                values.Add(
+                    new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Linha inválida" } }
+                );
+            }
+        }
+
+        BulkProcessResults results = new()
+        {
+            processed = i,
+            errors = values.Count,
+            errorsResult = values
+        };
+        return results;
+    }
+    
     private List<StatesRow> ReadStates(Stream stream)
     {
         return stream

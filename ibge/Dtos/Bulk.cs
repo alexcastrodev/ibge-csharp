@@ -14,6 +14,14 @@ public class StatesRow
     public string Name { get; set; } = "";
 }
 
+public class BulkProcessResults
+{
+    public int processed { get; set; } = 0;
+    public int errors { get; set; } = 0;
+
+    public List<Dictionary<string, object>> errorsResult { get; set; }
+}
+
 public class BulkResponse
 {
     public string ProcessedLabel { get; set; } = "";
