@@ -1,6 +1,13 @@
 ﻿# Introduction
 
+The challenge will be based on the [repository](https://github.com/andrebaltieri/ibge/tree/main) that contains data about cities and states throughout Brazil.
 
+The instructions for the challenge can be found [at this link](https://baltaio.blob.core.windows.net/temp/desafio-dotnet/01-sobre.pdf).
+
+
+# Resources
+
+<img src="./.assets/resources.jpg" />
 
 # Requirements
 
@@ -35,18 +42,6 @@ CREATE DATABASE ibge;
 ```bash
 dotnet run --project Ibge
 ```
-
-### Requests
-
-Get all locations
-
-```bash
-curl -X 'GET' \
-  'https://localhost:7186/v1/Locations' \
-  -H 'accept: application/json'
-```
-
-
 
 # SwaggerUI
 
