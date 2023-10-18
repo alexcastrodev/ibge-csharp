@@ -31,7 +31,7 @@ public class LocationService : ILocationRepository
 
 		if (!string.IsNullOrEmpty(searchCriteria.State))
 		{
-			query = query.Where(loc => loc.State.Contains(searchCriteria.State));
+			query = query.Where(loc => loc.State != null && loc.State.Contains(searchCriteria.State));
 		}
 
 		var locations = await query.ToListAsync();
