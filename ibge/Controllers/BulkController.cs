@@ -39,11 +39,11 @@ public class BulkController : ControllerBase
         var stream = file.OpenReadStream();
         var path = Path.GetTempFileName();
         BulkProcessResults results;
-        
+
         await using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
         {
             await stream.CopyToAsync(fileStream);
-            
+
             var states = ReadStates(stream);
             results = await ProcessExcel(stream, states);
         }
@@ -113,7 +113,7 @@ public class BulkController : ControllerBase
         };
         return results;
     }
-    
+
     private List<StatesRow> ReadStates(Stream stream)
     {
         return stream
