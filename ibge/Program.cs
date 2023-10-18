@@ -23,6 +23,32 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Challenge of https://balta.io",
         Version = "v1"
     });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+
+    // Add a requirement for the Bearer token
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+
 });
 
 var sasToken = Environment.GetEnvironmentVariable("AZURE_BLOB_TOKEN") ?? "";
@@ -38,7 +64,7 @@ var databasePassword = Environment.GetEnvironmentVariable("AZURE_DB_PASSWORD") ?
 var databaseName = Environment.GetEnvironmentVariable("AZURE_DB_DB") ?? "";
 
 var conn =
-    $"Server={databaseServer},1433;Database=${databaseName};User={databaseUser};Password={databasePassword};TrustServerCertificate=true;";
+    $"Server={databaseServer},1433;Database={databaseName};User={databaseUser};Password={databasePassword};TrustServerCertificate=true;";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(conn)
@@ -77,7 +103,10 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "IBGE API V1"); });
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "IBGE API V1");
+});
 
 app.UseHttpsRedirection();
 
