@@ -13,22 +13,22 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-	c.SwaggerDoc("v1", new OpenApiInfo
-	{
-		Title = "IBGE API",
-		Description = "Challenge of https://balta.io",
-		Version = "v1"
-	});
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "IBGE API",
+        Description = "Challenge of https://balta.io",
+        Version = "v1"
+    });
 });
 
 var conn = builder.Configuration["SqlServer:DefaultConnection"];
 var configuration = new ConfigurationBuilder()
-	.AddJsonFile("appsettings.json")
-	.Build();
+    .AddJsonFile("appsettings.json")
+    .Build();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-	options.UseSqlServer(conn)
+    options.UseSqlServer(conn)
 );
 
 
@@ -41,21 +41,21 @@ var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"] ?? "")
 
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(o =>
 {
-	o.TokenValidationParameters = new TokenValidationParameters
-	{
-		ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-		ValidAudience = builder.Configuration["JwtSettings:Audience"],
-		IssuerSigningKey = new SymmetricSecurityKey(key),
-		ValidateIssuer = false,
-		ValidateAudience = false,
-		ValidateLifetime = false,
-		ValidateIssuerSigningKey = true
-	};
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true
+    };
 });
 
 
