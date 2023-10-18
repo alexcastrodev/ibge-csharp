@@ -27,12 +27,18 @@ builder.Services.AddSwaggerGen(c =>
 
 var sasToken = Environment.GetEnvironmentVariable("AZURE_BLOB_TOKEN") ?? "";
 var blobServiceClient = new BlobServiceClient(BlobProvider.GetBlobServiceClientSas("bulks", sasToken));
-
-var conn = builder.Configuration["SqlServer:DefaultConnection"];
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 
+
+var databaseServer = Environment.GetEnvironmentVariable("AZURE_DB_URL") ?? "";
+var databaseUser = Environment.GetEnvironmentVariable("AZURE_DB_USER") ?? "";
+var databasePassword = Environment.GetEnvironmentVariable("AZURE_DB_PASSWORD") ?? "";
+var databaseName = Environment.GetEnvironmentVariable("AZURE_DB_DB") ?? "";
+
+var conn =
+    $"Server={databaseServer},1433;Database=${databaseName};User={databaseUser};Password={databasePassword};TrustServerCertificate=true;";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(conn)
