@@ -24,9 +24,9 @@ public class BulkController : ControllerBase
     [Authorize]
     [HttpPost(Name = "Import from excel")]
     public async Task<ActionResult<List<Dictionary<string, object>>>> Create(
-            [FromForm] IFormFile? file)
+        IFormFile file)
     {
-        if (file == null || file.Length == 0)
+        if (file.Length == 0)
         {
             return BadRequest("No file uploaded.");
         }
