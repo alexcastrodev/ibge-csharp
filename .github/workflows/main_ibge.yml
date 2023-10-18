@@ -19,7 +19,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '7.x'
+          dotnet-version: "7.x"
           include-prerelease: true
 
       - name: Build with dotnet
@@ -38,10 +38,18 @@ jobs:
     runs-on: windows-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+      - name: Set up Environment Variables
+        run: |
+          echo "AZURE_DB_USER=${{ secrets.AZURE_DB_USER }}" >> $GITHUB_ENV
+          echo "AZURE_DB_PASSWORD=${{ secrets.AZURE_DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "AZURE_DB_URL=${{ secrets.AZURE_DB_URL }}" >> $GITHUB_ENV
+          echo "AZURE_DB_DB=${{ secrets.AZURE_DB_DB }}" >> $GITHUB_ENV
+          echo "AZURE_BLOB_TOKEN=${{ secrets.AZURE_BLOB_TOKEN }}" >> $GITHUB_ENV
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
@@ -51,7 +59,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'ibge'
-          slot-name: 'Production'
+          app-name: "ibge"
+          slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5617D1F4CCDA41408D7A50C4FCFB3552 }}
           package: .
