@@ -44,8 +44,15 @@ public class BulkController : ControllerBase
         {
             await stream.CopyToAsync(fileStream);
 
-            var states = ReadStates(stream);
-            results = await ProcessExcel(stream, states);
+            try
+            {
+                var states = ReadStates(stream);
+                results = await ProcessExcel(stream, states);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -116,15 +123,23 @@ public class BulkController : ControllerBase
 
     private List<StatesRow> ReadStates(Stream stream)
     {
-        return stream
-            .Query(useHeaderRow: true)
-            .Select(rowData => new StatesRow()
-            {
-                Name = rowData.Nome_UF,
-                Code = (int)
-                    rowData.Codigo_UF,
-                Abbreviation = rowData.Sigla_UF,
-            }).ToList();
+        try
+        {
+            return stream
+                .Query(useHeaderRow: true)
+                .Select(rowData => new StatesRow()
+                {
+                    Name = rowData.Nome_UF,
+                    Code = (int)
+                        rowData.Codigo_UF,
+                    Abbreviation = rowData.Sigla_UF,
+                }).ToList();
+        }
+        catch
+        {
+            const string link = "https://github.com/andrebaltieri/ibge/blob/main/SQL%20INSERTS%20-%20API%20de%20localidades%20IBGE.xlsx";
+            throw new Exception($"O arquivo não está no formato correto. Baixe o arquivo correto em {link}");
+        }
     }
     private async Task ProcessExcelRow(int id, string? state, string city)
     {
