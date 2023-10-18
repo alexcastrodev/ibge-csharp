@@ -1,4 +1,5 @@
 using ibge.Dtos;
+using ibge.Exceptions;
 using ibge.Models;
 using ibge.Providers.interfaces;
 using ibge.Repositories;
@@ -9,7 +10,7 @@ using MiniExcelLibs;
 namespace ibge.Controllers;
 
 [ApiController]
-[Route("v1/[controller]")]
+[Route("v1/locations/[controller]")]
 public class BulkController : ControllerBase
 {
 	private readonly ILocationRepository _locationService;
@@ -34,41 +35,44 @@ public class BulkController : ControllerBase
             {
                 return BadRequest("The uploaded file is not in XLSX format.");
             }
-
+            
             var values = new List<Dictionary<string, object>>();
             var stream = file.OpenReadStream();
             var path = Path.GetTempFileName();
-	        var i = 0;
+            var i = 0;
 	        
 	        await using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
             {
                 await stream.CopyToAsync(fileStream);
-               
-                foreach(BulkRow row in stream.Query<BulkRow>())
+				var states = ReadStates(stream);
+                
+                foreach(CityRow row in stream.Query<CityRow>(sheetName: "MUNICIPIOS"))
                 {
-                    var reference = i + 1;
-                    i++;
-                    
-                    if (row.Id == 0 || row.State == "" || row.City == "")
-                    {
-	                    values.Add(
-		                    new Dictionary<string, object> { { "Reference", reference }, { "ID", row.Id }, { "State", row.State }, { "City", row.City }, { "Error", "Invalid row" } }
-	                    );
-	                    continue;
-                    }
-                    
-                    try
-                    {
-                        await ProcessExcelRow(row);
-                    }
-                    catch (Exception ex)
-                    {
-                        values.Add(
-                            new Dictionary<string, object> { { "Reference", reference }, { "ID", row.Id }, { "State", row.State }, { "City", row.City }, { "Error", ex.Message } }
-                        );
-                    }
+	                i++;
+	                StatesRow? state = states.Find(s => s.Code == (int) row.Codigo_UF);
+	                if (state == null ) continue;
+
+	                try
+	                {
+		                var abbreviation = state.Abbreviation.ToUpper() ?? "";
+		                await ProcessExcelRow(row.Codigo_Municipio, abbreviation, row.Nome_Municipio);
+	                }
+	                catch (Exception ex)
+	                {
+		                if (ex is ConflictException)
+		                {
+			                values.Add(
+				                new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Localização já existe" } }
+			                );
+			                continue;
+		                }
+		                values.Add(
+		                 new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Linha inválida" } }
+		                );
+	                }
                 }
             }
+	        
 	        
 	        string errorFile = null!;
 	        
@@ -96,13 +100,25 @@ public class BulkController : ControllerBase
 	            });
         }
 
-	private async Task ProcessExcelRow(BulkRow row)
+	private List<StatesRow> ReadStates(Stream stream)
+	{
+		return stream
+			.Query(useHeaderRow: true)
+			.Select(rowData => new StatesRow()
+			{
+				Name = rowData.Nome_UF, 
+					Code = (int)
+					rowData.Codigo_UF, 
+					Abbreviation = rowData.Sigla_UF,
+			}).ToList();
+	}
+	private async Task ProcessExcelRow(int id, string? state, string city)
 	{
 		Location location = new()
 		{
-			Id = row.Id,
-			State = row.State,
-			City = row.City
+			Id = id,
+			State = state,
+			City = city
 		};
 
 		await _locationService.Create(location);

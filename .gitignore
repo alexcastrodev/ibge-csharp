@@ -406,5 +406,3 @@ ASALocalRun/
 
 .env
 data/**
-
-ibge/Properties/launchSetting.json

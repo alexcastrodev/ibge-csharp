@@ -11,7 +11,7 @@ public class Location
 
 	[MaxLength(2)]
 	[Required(ErrorMessage = "State is required")]
-	public required string State { get; set; }
+	public required string? State { get; set; }
 
 	[MaxLength(100)]
 	[Required(ErrorMessage = "City is required")]
