@@ -19,7 +19,7 @@ public class LocationsController : ControllerBase
 	}
 
 	[Authorize]
-	[HttpGet(Name = "GetListOfIbge")]
+	[HttpGet(Name = "Get locations")]
 	public async Task<ActionResult<List<Location>>> Get([FromQuery] LocationSearchCriteria searchCriteria)
 	{
 		return await _locationService.Get(searchCriteria);
@@ -41,5 +41,39 @@ public class LocationsController : ControllerBase
 			if (ex is ConflictException) return Conflict(ex.Message);
 			throw new Exception(ex.Message);
 		}
+	}
+	
+	[Authorize]
+	[HttpGet("{id}", Name = "Get location by id")]
+	public async Task<ActionResult<Location>> Index([FromRoute] int id)
+	{
+		var location = await _locationService.Find(id);
+		if (location.Value == null) return NotFound();
+
+		return location.Value;
+	}
+
+	[Authorize] [HttpDelete("{id}", Name = "Delete location by id")]
+	public async Task<ActionResult<List<bool>>> Delete([FromRoute] int id)
+	{
+		var location = await _locationService.Delete(id);
+		if (location.Value == 0) return NotFound();		
+		return Ok(location.Value);
+	}
+	
+	[Authorize] [HttpPut("{id}", Name = "Update location by id")]
+	public async Task<ActionResult<Location>> Update([FromRoute] int id, [FromBody] LocationUpdate model)
+	{
+		var location = await _locationService.Update(id, model);
+		if (location.Value == null) return NotFound();		
+		return location.Value;
+	}
+	
+	[Authorize] [HttpPatch("{id}", Name = "Patch location by id")]
+	public async Task<ActionResult<Location>> Patch([FromRoute] int id, [FromBody] LocationPatch model)
+	{
+		var location = await _locationService.Patch(id, model);
+		if (location.Value == null) return NotFound();
+		return location.Value;
 	}
 }

@@ -52,4 +52,55 @@ public class LocationService : ILocationRepository
 		return true;
 	}
 
+	public async Task<ActionResult<Location?>> Find(int id)
+	{
+		var location = await _context.Locations.FindAsync(id);
+		
+		return location;
+	}
+	
+	public async Task<ActionResult<int>> Delete(int id)
+	{
+		var location = await _context.Locations.FindAsync(id);
+		if (location == null) return 0;
+			
+		_context.Locations.Remove(location);
+		await _context.SaveChangesAsync();
+		
+		return location.Id;
+	}
+	
+	public async Task<ActionResult<Location?>> Update(int id, LocationUpdate model)
+	{
+		var location = await _context.Locations.FindAsync(id);
+		
+		if (location == null) return null!;
+		
+		location.City = model.City;
+		location.State = model.State;
+		
+		await _context.SaveChangesAsync();
+		
+		return location;
+	}
+	
+	public async Task<ActionResult<Location?>> Patch(int id, LocationPatch model)
+	{
+		var location = await _context.Locations.Where(location => location.Id == id).FirstOrDefaultAsync();
+		if (location == null) return null!;
+
+		if (!string.IsNullOrEmpty(model.City))
+		{
+			location.City = model.City;
+		}
+		
+		if (!string.IsNullOrEmpty(model.State))
+		{
+			location.State = model.State;
+		}
+		
+		await _context.SaveChangesAsync();
+		
+		return location;
+	}
 }
