@@ -1,4 +1,8 @@
 ﻿using System.Text;
+using Azure.Identity;
+using Azure.Storage.Blobs;
+using ibge.Providers;
+using ibge.Providers.interfaces;
 using ibge.Repositories;
 using ibge.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +25,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+var sasToken = Environment.GetEnvironmentVariable("AZURE_BLOB_TOKEN") ?? "";
+var blobServiceClient = new BlobServiceClient(BlobProvider.GetBlobServiceClientSas("bulks", sasToken));
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
@@ -40,8 +46,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 builder.Services.AddSingleton<IConfiguration>(configuration);
+builder.Services.AddSingleton(blobServiceClient);
 
 builder.Services.AddScoped<IUserRepository, UserService>();
+builder.Services.AddScoped<IBlobProvider, BlobProvider>();
 builder.Services.AddScoped<ILocationRepository, LocationService>();
 
 var key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"] ?? "");
