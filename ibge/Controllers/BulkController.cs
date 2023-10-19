@@ -99,7 +99,13 @@ public class BulkController : ControllerBase
             }
 
             StatesRow? state = states.Find(s => s.Code == row.Codigo_UF);
-            if (state == null) continue;
+            if (state == null)
+            {
+                values.Add(
+                    new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "City", row.Nome_Municipio }, { "Error", "Estado não encontrado" } }
+                );
+                continue;
+            };
 
             try
             {

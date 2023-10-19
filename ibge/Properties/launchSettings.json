@@ -29,7 +29,8 @@
         "AZURE_DB_URL": "localhost",
         "AZURE_DB_USER": "sa",
         "AZURE_DB_PASSWORD": "Admin123@@",
-        "AZURE_DB_DB": "ibge"
+        "AZURE_DB_DB": "ibge",
+        "AZURE_BLOB_TOKEN": "DMELxSryBXiYP4L3X1KnosTPNIL03EmX9QpY/YkkI7MI4m+N8ObYH9sEKPBozbavH/LwVnobR2F8+AStj7jEww=="
       },
       "dotnetRunMessages": true
     },
