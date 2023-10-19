@@ -16,6 +16,15 @@ public class LocationService : ILocationRepository
         _context = context;
     }
 
+    public List<int> GetIds()
+    {
+        var locationsIds = _context.Locations
+            .Select(l => l.Id)
+            .ToList();
+
+        return locationsIds;
+    }
+
     public async Task<ActionResult<List<Location>>> Get(LocationSearchCriteria searchCriteria)
     {
         var query = _context.Locations.AsQueryable();

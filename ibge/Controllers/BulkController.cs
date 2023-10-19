@@ -85,10 +85,19 @@ public class BulkController : ControllerBase
     {
         var i = 0;
         var values = new List<Dictionary<string, object>>();
+        var ids = _locationService.GetIds();
 
         foreach (CityRow row in stream.Query<CityRow>(sheetName: "MUNICIPIOS"))
         {
             i++;
+            if (ids.Contains(row.Codigo_Municipio))
+            {
+                values.Add(
+                    new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "City", row.Nome_Municipio }, { "Error", "Localização já existe" } }
+                );
+                continue;
+            }
+
             StatesRow? state = states.Find(s => s.Code == row.Codigo_UF);
             if (state == null) continue;
 
@@ -102,12 +111,12 @@ public class BulkController : ControllerBase
                 if (ex is ConflictException)
                 {
                     values.Add(
-                        new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Localização já existe" } }
+                        new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "City", row.Nome_Municipio }, { "Error", "Localização já existe" } }
                     );
                     continue;
                 }
                 values.Add(
-                    new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "State", state.Name }, { "City", row.Nome_Municipio }, { "Error", "Linha inválida" } }
+                    new Dictionary<string, object> { { "Reference", i }, { "ID", row.Codigo_Municipio }, { "City", row.Nome_Municipio }, { "Error", "Linha inválida" } }
                 );
             }
         }

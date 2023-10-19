@@ -12,4 +12,5 @@ public interface ILocationRepository
     Task<ActionResult<int>> Delete(int id);
     Task<ActionResult<Location?>> Update(int id, LocationUpdate model);
     Task<ActionResult<Location?>> Patch(int id, LocationPatch model);
+    List<int> GetIds();
 }
