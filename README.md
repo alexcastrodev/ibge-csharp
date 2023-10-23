@@ -6,6 +6,10 @@ The instructions for the challenge can be found [at this link](https://baltaio.b
 
 PS: The resource will be active until end of October 2023.
 
+# Docs
+
+https://ibge.azurewebsites.net/swagger/index.html
+
 # Resources
 
 <img src="./.assets/resources.jpg" />
