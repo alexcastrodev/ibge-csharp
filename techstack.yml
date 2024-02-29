@@ -2,7 +2,7 @@ repo_name: AlexcastroDev/ibge-csharp
 report_id: 8608802155d7201353aa3c4b9cb04373
 version: 0.1
 repo_type: Public
-timestamp: '2024-01-05T08:12:25+00:00'
+timestamp: '2024-02-29T19:22:58+00:00'
 requested_by: AlexcastroDev
 provider: github
 branch: main
@@ -90,7 +90,7 @@ tools:
   last_updated_by: Alex Oliveira
   last_updated_on: 2023-10-13 02:17:04.000000000 Z
 - name: Entity Framework Core
-  description: 'Lightweight and cross-platform version of the popular Entity Framework '
+  description: Lightweight and cross-platform version of the popular Entity Framework
   website_url: https://docs.microsoft.com/en-us/ef/core/
   license: MIT
   open_source: true
@@ -274,3 +274,16 @@ tools:
   detection_source: ibge/ibge.csproj
   last_updated_by: Alex Oliveira
   last_updated_on: 2023-10-13 02:17:04.000000000 Z
+  vulnerabilities:
+  - name: Microsoft Identity Denial of service vulnerability
+    cve_id: CVE-2024-21319
+    cve_url: https://github.com/advisories/GHSA-8g9c-28fc-mcx2
+    detected_date: Jan 10
+    severity: moderate
+    first_patched: 7.1.2
+  - name: 'Microsoft Security Advisory CVE-2024-21319: .NET Denial of Service Vulnerability'
+    cve_id: 
+    cve_url: https://github.com/advisories/GHSA-59j7-ghrg-fj52
+    detected_date: Jan 10
+    severity: moderate
+    first_patched: 7.1.2
